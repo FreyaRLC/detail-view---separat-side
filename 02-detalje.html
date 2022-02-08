@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>detalje view</title>
+</head>
+<body>
+    <section>
+      <article class="person">
+            <h2></h2>
+            <img src="" alt="">
+            <h3>Titel: <span class="titel"></span></h3>
+            <p>Email: <span class="email"></span></p>
+            <p>Fødselsdag: <span class="fdag"></span></p>
+            <p>Hobby: <span class="hobby"></span></p>
+            <p>Troende: <span class="tro"></span></p>
+      </article>
+      <button class="back">Gå tilbage</button>
+    </section>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+
+        const medieurl = "https://persongalleri-5d3e.restdb.io/media/";
+        let person;
+        const myHeaders = {
+            'x-apikey': "600fe9211346a1524ff12e31"
+        }
+        console.log("ID", id);
+        document.addEventListener("DOMContentLoaded", loadJSON);
+
+        async function loadJSON() {
+            const JSONData = await fetch (`https://persongalleri-5d3e.restdb.io/rest/persongalleri/${id}`, {
+                headers: myHeaders
+            });
+            person = await JSONData.json();
+            console.log("Personer", person);
+            visPerson(person);
+        }
+
+        function visPerson(){
+            document.querySelector("h2").textContent = person.fornavn + " " + person.efternavn;
+            document.querySelector(".titel").textContent = person.titel;
+            document.querySelector(".email").textContent = person.email;
+            document.querySelector(".fdag").textContent = person.fødselsdag;
+            document.querySelector(".hobby").textContent = person.hobby;
+            document.querySelector(".tro").textContent = person.troende;
+            document.querySelector(".back").addEventListener("click", tilbageTilPersonGalleri);
+        }
+
+        function tilbageTilPersonGalleri(){
+            history.back();
+        }
+    </script>
+</body>
+</html>
